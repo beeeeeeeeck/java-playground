@@ -62,3 +62,10 @@ hs_err_pid*
 *.iml
 *.ipr
 
+# System
+.DS_Store
+
+# Project output
+target
+out
+dist
