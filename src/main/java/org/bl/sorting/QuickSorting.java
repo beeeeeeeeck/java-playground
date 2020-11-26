@@ -13,7 +13,7 @@ import java.util.Arrays;
  * 空间复杂度, O(log n)
  * 稳定性, 不稳定
  */
-public class QuickSort {
+public class QuickSorting {
 
     public static void main(String[] args) {
         int[] arr = {3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48};
