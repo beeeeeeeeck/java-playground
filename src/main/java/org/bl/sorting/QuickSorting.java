@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class QuickSorting {
 
     public static void main(String[] args) {
-        int[] arr = {3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48};
+        int[] arr = {3, 4, 2, 1, 5};
         System.out.println(Arrays.toString(sort(arr)));
     }
 

@@ -1,6 +1,7 @@
 package org.bl.sorting;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * 冒泡排序算法的原理如下:
@@ -17,39 +18,26 @@ public class BubbleSorting {
 
     public static void main(String[] args) {
         Integer[] arr = {3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48};
-        sort(arr);
-        System.out.println(Arrays.toString(arr));
+        System.out.println(Arrays.toString(sort(arr)));
     }
 
-    public static <T extends Comparable<T>> void sort(T[] arr) {
+    public static <T extends Comparable<T>> T[] sort(T[] target) {
+        T[] arr = Arrays.copyOf(target, target.length);
         T temp;
         boolean swapped = true;
-        for (int i = 0; i < arr.length - 1 && swapped; i++) {
-            swapped = false;
-            for (int j = 0; j < arr.length - 1 - i; j++) {
-                if (arr[j].compareTo(arr[j + 1]) > 0) {
+        // 没有发生交换则判定当前组及后面的每一组都已经是正序，无需再进行处理
+        for (int i = 0; i < arr.length - 1 && swapped; i++) { // 按(1...n) -> (1...n-1) -> (1...n-2) -> (1...2)进行分组检查
+            swapped = false; // 假定不会交换
+            for (int j = 0; j < arr.length - 1 - i; j++) { // 检查每一组里相邻的左边元素和右边元素
+                if (arr[j].compareTo(arr[j + 1]) > 0) { // 如果左边元素 > 右边元素就进行交换
                     temp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = temp;
-                    swapped = true;
+                    swapped = true; // 有交换则继续处理, 设置交换旗帜变量确保进行下一组检查
                 }
             }
         }
-        // while(swapped) { // 有交换则继续处理
-        //     swapped = false; // 假定不会交换
-        //     for (int i = 0; i < arr.length - 1; i++) { // 按(1...n) -> (1...n-1) -> (1...n-2) -> (1...2)进行分组检查
-        //         for (int j = 0; j < arr.length - 1 - i; j++) { // 检查每一组里相邻的左边元素和右边元素
-        //             if (arr[j].compareTo(arr[j + 1]) > 0) { // 如果左边元素 > 右边元素就进行交换
-        //                 temp = arr[j];
-        //                 arr[j] = arr[j + 1];
-        //                 arr[j + 1] = temp;
-        //                 swapped = true; // 设置交换旗帜变量确保进行下一组检查
-        //             }
-        //         }
-        //     }
-        //     if (!swapped) { // 没有发生交换则判定当前组及后面的每一组都已经是正序，无需再进行处理
-        //         break;
-        //     }
-        // }
+
+        return arr;
     }
 }

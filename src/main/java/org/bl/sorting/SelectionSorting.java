@@ -1,6 +1,7 @@
 package org.bl.sorting;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * 选择排序思路
@@ -14,11 +15,11 @@ import java.util.Arrays;
 public class SelectionSorting {
     public static void main(String[] args) {
         Integer[] arr = {3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48};
-        sort(arr);
-        System.out.println(Arrays.toString(arr));
+        System.out.println(Arrays.toString(sort(arr)));
     }
 
-    private static <T extends Comparable<T>> void sort(T[] arr) {
+    public static <T extends Comparable<T>> T[] sort(T[] target) {
+        T[] arr = Arrays.copyOf(target, target.length);
         T temp;
         for (int i = 0; i < arr.length - 1; i++) { // 按(1...n) -> (2...n) -> (3...n) -> (n-1...n)进行分组检查
             int k = i; // 把每一组里第一个没有排序过的元素设置为最小值
@@ -34,5 +35,7 @@ public class SelectionSorting {
                 arr[k] = temp;
             }
         }
+
+        return arr;
     }
 }
