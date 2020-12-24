@@ -4,9 +4,9 @@ import java.util.concurrent.Semaphore;
 
 public class TestSemaphore {
 
-    private class Worker extends Thread {
-        private int num;
-        private Semaphore semaphore;
+    private static class Worker extends Thread {
+        private final int num;
+        private final Semaphore semaphore;
 
         public Worker(int num, Semaphore semaphore) {
             this.num = num;
@@ -18,7 +18,7 @@ public class TestSemaphore {
             System.out.println("Doing " + num);
             try {
                 semaphore.acquire();
-                Thread.sleep(num * 1000 + 1000);
+                Thread.sleep(5000);
                 semaphore.release();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
@@ -29,7 +29,7 @@ public class TestSemaphore {
 
     private void begin() {
         Semaphore semaphore = new Semaphore(5);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             new Worker(i, semaphore).start();
         }
     }
