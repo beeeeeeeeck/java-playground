@@ -4,10 +4,10 @@ import java.util.concurrent.CyclicBarrier;
 
 public class TestCyclicBarrier {
     public static final int NUM = 5;
-    private CyclicBarrier cyclicBarrier = new CyclicBarrier(5);
+    private final CyclicBarrier cyclicBarrier = new CyclicBarrier(5);
 
     private class Student implements Runnable {
-        private int num;
+        private final int num;
 
         public Student(int num) {
             this.num = num;
@@ -17,7 +17,7 @@ public class TestCyclicBarrier {
         public void run() {
             System.out.println("Set up " + num);
             try {
-                Thread.sleep(num * 1000);
+                Thread.sleep(num * 1000L);
                 cyclicBarrier.await();
             } catch (Exception ex) {
                 ex.printStackTrace();

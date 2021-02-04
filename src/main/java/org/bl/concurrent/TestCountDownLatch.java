@@ -6,10 +6,10 @@ import java.util.concurrent.CountDownLatch;
 public class TestCountDownLatch {
 
     public static final int COUNT_NUM = 4;
-    private CountDownLatch countDownLatch = new CountDownLatch(COUNT_NUM);
+    private final CountDownLatch countDownLatch = new CountDownLatch(COUNT_NUM);
 
     private class Runner implements Runnable {
-        private int result;
+        private final int result;
 
         public Runner(int result) {
             this.result = result;
@@ -18,7 +18,8 @@ public class TestCountDownLatch {
         @Override
         public void run() {
             try {
-                Thread.sleep(result * 1000);
+                Thread.sleep(result * 1000L);
+                System.out.println("Sleep - " + result);
                 countDownLatch.countDown();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();

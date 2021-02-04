@@ -9,7 +9,7 @@ import java.util.concurrent.RecursiveTask;
  * @author beckl
  */
 public class TestForkJoin {
-    static class Fibonacci extends RecursiveTask<Integer> {
+    private static class Fibonacci extends RecursiveTask<Integer> {
         private final int n;
 
         public Fibonacci(int n) {
@@ -43,13 +43,13 @@ public class TestForkJoin {
         Future<Integer> future = forkJoinPool.submit(fibonacci);
         System.out.println(future.get());
         long end = System.currentTimeMillis();
-        System.out.println(String.format("Time elapsed %d millis", end - start));
+        System.out.printf("ForkJoinPool - Time elapsed %d millis%n", end - start);
 
         start = System.currentTimeMillis();
         int result = computeFibonacci(target);
         end = System.currentTimeMillis();
         System.out.println(result);
-        System.out.println(String.format("Time elapsed %d millis", end - start));
+        System.out.printf("Time elapsed %d millis%n", end - start);
     }
 
     private static int computeFibonacci(int n) {
