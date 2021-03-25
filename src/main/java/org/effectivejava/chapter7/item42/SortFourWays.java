@@ -23,7 +23,7 @@ public class SortFourWays {
 
         // Lambda expression as function object (replaces anonymous class) (Page 194)
         Collections.sort(words,
-                (s1, s2) -> Integer.compare(s1.length(), s2.length()));
+            (s1, s2) -> Integer.compare(s1.length(), s2.length()));
         System.out.println(words);
         Collections.shuffle(words);
 

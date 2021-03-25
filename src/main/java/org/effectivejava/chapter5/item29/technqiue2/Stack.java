@@ -1,14 +1,15 @@
 package org.effectivejava.chapter5.item29.technqiue2;
 
-import java.util.Arrays;
 import org.effectivejava.chapter5.item29.EmptyStackException;
+
+import java.util.Arrays;
 
 // Generic stack using Object[] (Pages 130-3)
 public class Stack<E> {
     private Object[] elements;
     private int size = 0;
     private static final int DEFAULT_INITIAL_CAPACITY = 16;
-    
+
     public Stack() {
         elements = new Object[DEFAULT_INITIAL_CAPACITY];
     }
@@ -25,7 +26,7 @@ public class Stack<E> {
 
         // push requires elements to be of type E, so cast is correct
         @SuppressWarnings("unchecked") E result =
-                (E) elements[--size];
+            (E) elements[--size];
 
         elements[size] = null; // Eliminate obsolete reference
         return result;

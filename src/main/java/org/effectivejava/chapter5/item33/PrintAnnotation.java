@@ -1,6 +1,7 @@
 package org.effectivejava.chapter5.item33;
-import java.lang.annotation.*;
-import java.lang.reflect.*;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 
 // Use of asSubclass to safely cast to a bounded type token (Page 155)
 public class PrintAnnotation {
@@ -13,7 +14,7 @@ public class PrintAnnotation {
             throw new IllegalArgumentException(ex);
         }
         return element.getAnnotation(
-                annotationType.asSubclass(Annotation.class));
+            annotationType.asSubclass(Annotation.class));
     }
 
     // Test program to print named annotation of named class
@@ -24,7 +25,7 @@ public class PrintAnnotation {
             System.exit(1);
         }
         String className = args[0];
-        String annotationTypeName = args[1]; 
+        String annotationTypeName = args[1];
         Class<?> klass = Class.forName(className);
         System.out.println(getAnnotation(klass, annotationTypeName));
     }

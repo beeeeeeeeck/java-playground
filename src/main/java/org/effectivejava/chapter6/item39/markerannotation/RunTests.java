@@ -2,7 +2,8 @@ package org.effectivejava.chapter6.item39.markerannotation;
 
 // Program to process marker annotations (Page 182)
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class RunTests {
     public static void main(String[] args) throws Exception {
@@ -24,6 +25,6 @@ public class RunTests {
             }
         }
         System.out.printf("Passed: %d, Failed: %d%n",
-                passed, tests - passed);
+            passed, tests - passed);
     }
 }

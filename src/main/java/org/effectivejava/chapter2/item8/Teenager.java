@@ -7,6 +7,6 @@ public class Teenager {
         System.out.println("Peace out");
 
         // Uncomment next line and retest behavior, but note that you MUST NOT depend on this behavior!
-//      System.gc();
+        //      System.gc();
     }
 }

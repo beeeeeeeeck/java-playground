@@ -1,5 +1,7 @@
 package org.effectivejava.chapter5.item31;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 // Using a recursive type bound with wildcards (Page 143)
 public class RecursiveTypeBound {

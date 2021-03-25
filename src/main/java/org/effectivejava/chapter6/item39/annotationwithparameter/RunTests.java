@@ -1,7 +1,9 @@
 package org.effectivejava.chapter6.item39.annotationwithparameter;
 
 import org.effectivejava.chapter6.item39.markerannotation.Test;
-import java.lang.reflect.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 // Program to process marker annotations and annotations with a parameter (Page 184)
 public class RunTests {
@@ -31,13 +33,13 @@ public class RunTests {
                 } catch (InvocationTargetException wrappedEx) {
                     Throwable exc = wrappedEx.getCause();
                     Class<? extends Throwable> excType =
-                            m.getAnnotation(ExceptionTest.class).value();
+                        m.getAnnotation(ExceptionTest.class).value();
                     if (excType.isInstance(exc)) {
                         passed++;
                     } else {
                         System.out.printf(
-                                "Test %s failed: expected %s, got %s%n",
-                                m, excType.getName(), exc);
+                            "Test %s failed: expected %s, got %s%n",
+                            m, excType.getName(), exc);
                     }
                 } catch (Exception exc) {
                     System.out.println("Invalid @ExceptionTest: " + m);
@@ -46,6 +48,6 @@ public class RunTests {
         }
 
         System.out.printf("Passed: %d, Failed: %d%n",
-                passed, tests - passed);
+            passed, tests - passed);
     }
 }

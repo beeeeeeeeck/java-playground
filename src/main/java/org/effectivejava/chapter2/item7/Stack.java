@@ -1,5 +1,6 @@
 package org.effectivejava.chapter2.item7;
-import java.util.*;
+
+import java.util.Arrays;
 
 // Can you spot the "memory leak"?  (Pages 26-27)
 public class Stack {
@@ -31,14 +32,14 @@ public class Stack {
             elements = Arrays.copyOf(elements, 2 * size + 1);
     }
 
-//    // Corrected version of pop method (Page 27)
-//    public Object pop() {
-//        if (size == 0)
-//            throw new EmptyStackException();
-//        Object result = elements[--size];
-//        elements[size] = null; // Eliminate obsolete reference
-//        return result;
-//    }
+    //    // Corrected version of pop method (Page 27)
+    //    public Object pop() {
+    //        if (size == 0)
+    //            throw new EmptyStackException();
+    //        Object result = elements[--size];
+    //        elements[size] = null; // Eliminate obsolete reference
+    //        return result;
+    //    }
 
     public static void main(String[] args) {
         Stack stack = new Stack();

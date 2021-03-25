@@ -2,7 +2,12 @@ package org.effectivejava.chapter7.item45.anagrams;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 // Prints all large anagram groups in a dictionary iteratively (Page 204)
 public class IterativeAnagrams {
@@ -15,7 +20,7 @@ public class IterativeAnagrams {
             while (s.hasNext()) {
                 String word = s.next();
                 groups.computeIfAbsent(alphabetize(word),
-                        (unused) -> new TreeSet<>()).add(word);
+                    (unused) -> new TreeSet<>()).add(word);
             }
         }
 

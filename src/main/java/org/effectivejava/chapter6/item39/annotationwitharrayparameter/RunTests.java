@@ -1,7 +1,9 @@
 package org.effectivejava.chapter6.item39.annotationwitharrayparameter;
+
 import org.effectivejava.chapter6.item39.markerannotation.Test;
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 // Program to process marker annotations and annotations with array parameter (Page 185)
 public class RunTests {
@@ -33,7 +35,7 @@ public class RunTests {
                     Throwable exc = wrappedExc.getCause();
                     int oldPassed = passed;
                     Class<? extends Throwable>[] excTypes =
-                            m.getAnnotation(ExceptionTest.class).value();
+                        m.getAnnotation(ExceptionTest.class).value();
                     for (Class<? extends Throwable> excType : excTypes) {
                         if (excType.isInstance(exc)) {
                             passed++;
@@ -46,6 +48,6 @@ public class RunTests {
             }
         }
         System.out.printf("Passed: %d, Failed: %d%n",
-                passed, tests - passed);
+            passed, tests - passed);
     }
 }

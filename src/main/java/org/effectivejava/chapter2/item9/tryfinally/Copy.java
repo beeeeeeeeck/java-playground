@@ -1,6 +1,10 @@
 package org.effectivejava.chapter2.item9.tryfinally;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class Copy {
     private static final int BUFFER_SIZE = 8 * 1024;

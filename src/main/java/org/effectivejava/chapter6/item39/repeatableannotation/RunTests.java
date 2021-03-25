@@ -27,7 +27,7 @@ public class RunTests {
 
             // Processing repeatable annotations (Page 187)
             if (m.isAnnotationPresent(ExceptionTest.class)
-                    || m.isAnnotationPresent(ExceptionTestContainer.class)) {
+                || m.isAnnotationPresent(ExceptionTestContainer.class)) {
                 tests++;
                 try {
                     m.invoke(null);
@@ -36,7 +36,7 @@ public class RunTests {
                     Throwable exc = wrappedExc.getCause();
                     int oldPassed = passed;
                     ExceptionTest[] excTests =
-                            m.getAnnotationsByType(ExceptionTest.class);
+                        m.getAnnotationsByType(ExceptionTest.class);
                     for (ExceptionTest excTest : excTests) {
                         if (excTest.value().isInstance(exc)) {
                             passed++;
@@ -49,6 +49,6 @@ public class RunTests {
             }
         }
         System.out.printf("Passed: %d, Failed: %d%n",
-                          passed, tests - passed);
+            passed, tests - passed);
     }
 }

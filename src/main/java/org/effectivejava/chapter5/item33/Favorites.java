@@ -1,5 +1,8 @@
 package org.effectivejava.chapter5.item33;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 // Typesafe heterogeneous container pattern (Pages 151-4)
 public class Favorites {
@@ -13,10 +16,10 @@ public class Favorites {
         return type.cast(favorites.get(type));
     }
 
-//    // Achieving runtime type safety with a dynamic cast
-//    public <T> void putFavorite(Class<T> type, T instance) {
-//        favorites.put(Objects.requireNonNull(type), type.cast(instance));
-//    }
+    //    // Achieving runtime type safety with a dynamic cast
+    //    public <T> void putFavorite(Class<T> type, T instance) {
+    //        favorites.put(Objects.requireNonNull(type), type.cast(instance));
+    //    }
 
     public static void main(String[] args) {
         Favorites f = new Favorites();
@@ -27,6 +30,6 @@ public class Favorites {
         int favoriteInteger = f.getFavorite(Integer.class);
         Class<?> favoriteClass = f.getFavorite(Class.class);
         System.out.printf("%s %x %s%n", favoriteString,
-                favoriteInteger, favoriteClass.getName());
+            favoriteInteger, favoriteClass.getName());
     }
 }

@@ -17,9 +17,9 @@ public class HybridAnagrams {
 
         try (Stream<String> words = Files.lines(dictionary)) {
             words.collect(groupingBy(word -> alphabetize(word)))
-                    .values().stream()
-                    .filter(group -> group.size() >= minGroupSize)
-                    .forEach(g -> System.out.println(g.size() + ": " + g));
+                .values().stream()
+                .filter(group -> group.size() >= minGroupSize)
+                .forEach(g -> System.out.println(g.size() + ": " + g));
         }
     }
 

@@ -1,13 +1,17 @@
 package org.effectivejava.chapter2.item9.trywithresources;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class Copy {
     private static final int BUFFER_SIZE = 8 * 1024;
 
     // try-with-resources on multiple resources - short and sweet (Page 35)
     static void copy(String src, String dst) throws IOException {
-        try (InputStream   in = new FileInputStream(src);
+        try (InputStream in = new FileInputStream(src);
              OutputStream out = new FileOutputStream(dst)) {
             byte[] buf = new byte[BUFFER_SIZE];
             int n;

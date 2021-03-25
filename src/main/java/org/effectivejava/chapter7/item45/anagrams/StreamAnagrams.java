@@ -16,14 +16,14 @@ public class StreamAnagrams {
 
         try (Stream<String> words = Files.lines(dictionary)) {
             words.collect(
-                    groupingBy(word -> word.chars().sorted()
-                            .collect(StringBuilder::new,
-                                    (sb, c) -> sb.append((char) c),
-                                    StringBuilder::append).toString()))
-                    .values().stream()
-                    .filter(group -> group.size() >= minGroupSize)
-                    .map(group -> group.size() + ": " + group)
-                    .forEach(System.out::println);
+                groupingBy(word -> word.chars().sorted()
+                    .collect(StringBuilder::new,
+                        (sb, c) -> sb.append((char) c),
+                        StringBuilder::append).toString()))
+                .values().stream()
+                .filter(group -> group.size() >= minGroupSize)
+                .map(group -> group.size() + ": " + group)
+                .forEach(System.out::println);
         }
     }
 }
