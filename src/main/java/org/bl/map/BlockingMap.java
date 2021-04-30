@@ -1,4 +1,4 @@
-package org.bl.blocking;
+package org.bl.map;
 
 import java.util.Collection;
 import java.util.Map;
