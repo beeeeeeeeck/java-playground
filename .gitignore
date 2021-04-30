@@ -32,6 +32,7 @@ hs_err_pid*
 
 # Generated files
 .idea/**/contentModel.xml
+.idea/leetcode
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
