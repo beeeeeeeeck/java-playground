@@ -2,6 +2,7 @@ package org.bl.blocking;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -168,7 +169,7 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
             if (map.size() > 0) {
                 return map.remove(key);
             }
-            return null;
+            throw new NoSuchElementException("Map is empty");
         } finally {
             lock.unlock();
         }
