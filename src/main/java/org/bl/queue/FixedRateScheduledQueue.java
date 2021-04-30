@@ -190,6 +190,7 @@ public class FixedRateScheduledQueue<T> implements ScheduledBlockingQueue<T> {
         return queue.toArray();
     }
 
+    @SuppressWarnings("all")
     @Override
     public <E> E[] toArray(E[] a) {
         return queue.toArray(a);
