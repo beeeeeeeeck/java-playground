@@ -1,4 +1,4 @@
-package org.bl.blocking;
+package org.bl.map;
 
 import java.util.Collection;
 import java.util.Map;
@@ -11,9 +11,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * A bounded {@linkplain BlockingMap blocking map} backed by a concurrent
+ * map.
+ *
+ * <p>This class supports an optional fairness policy for ordering
+ * waiting producer and consumer threads.  By default, this ordering
+ * is not guaranteed. However, a queue constructed with fairness set
+ * to {@code true} grants threads access in FIFO order. Fairness
+ * generally decreases throughput but reduces variability and avoids
+ * starvation.
+ */
 public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
-    private final ConcurrentMap<K, V> map;
     private final int capacity;
+    private final ConcurrentMap<K, V> map;
+    private final ConcurrentMap<K, Condition> lockMap;
 
     // Main lock guarding all access
     private final ReentrantLock lock;
@@ -33,9 +45,16 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
 
         this.capacity = capacity;
         this.map = new ConcurrentHashMap<>(capacity);
+        this.lockMap = new ConcurrentHashMap<>(capacity);
         this.lock = new ReentrantLock(fair);
         this.notEmpty = this.lock.newCondition();
         this.notFull = this.lock.newCondition();
+    }
+
+    private Condition keyToCondition(K key) {
+        final ReentrantLock lock = this.lock;
+        lockMap.putIfAbsent(key, lock.newCondition());
+        return lockMap.get(key);
     }
 
     @Override
@@ -49,6 +68,7 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
                 notFull.await();
             }
             map.put(key, value);
+            keyToCondition(key).signal();
             notEmpty.signal();
         } finally {
             lock.unlock();
@@ -70,6 +90,7 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
                 nanos = notFull.awaitNanos(nanos);
             }
             map.put(key, value);
+            keyToCondition(key).signal();
             notEmpty.signal();
             return true;
         } finally {
@@ -88,6 +109,7 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
                 return false;
             }
             map.put(key, value);
+            keyToCondition(key).signal();
             notEmpty.signal();
             return true;
         } finally {
@@ -111,7 +133,10 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
             while (map.size() == 0) {
                 notEmpty.await();
             }
-            V val = map.get(key);
+            V val;
+            while ((val = map.get(key)) == null) {
+                keyToCondition(key).await();
+            }
             map.remove(key);
             notFull.signal();
             return val;
@@ -133,7 +158,13 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
                 }
                 nanos = notEmpty.awaitNanos(nanos);
             }
-            V val = map.get(key);
+            V val;
+            while ((val = map.get(key)) == null) {
+                if (nanos <= 0L) {
+                    return null;
+                }
+                nanos = keyToCondition(key).awaitNanos(nanos);
+            }
             map.remove(key);
             notFull.signal();
             return val;
@@ -152,6 +183,9 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
                 return null;
             }
             V val = map.get(key);
+            if (val == null) {
+                return null;
+            }
             map.remove(key);
             notFull.signal();
             return val;
@@ -166,7 +200,7 @@ public class BlockingHashMap<K, V> implements BlockingMap<K, V> {
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
-            if (map.size() > 0) {
+            if (map.size() > 0 && map.containsKey(key)) {
                 return map.remove(key);
             }
             throw new NoSuchElementException("Map is empty");

@@ -1,5 +1,6 @@
-package org.bl.blocking;
+package org.bl.map;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -8,9 +9,9 @@ import java.util.stream.IntStream;
 
 public class BlockingHashMapTest {
     public static void main(String[] args) {
-        BlockingMap<String, String> map = new BlockingHashMap<>(6);
+        BlockingMap<String, String> map = new BlockingHashMap<>(10);
         List<Integer> list = IntStream.rangeClosed(1, 10).boxed().sorted(Comparator.comparingInt(i -> -1 * i)).collect(Collectors.toList());
-        // Collections.shuffle(list);
+        Collections.shuffle(list);
         new Thread(() -> list.forEach(l -> {
             System.out.println(l + " put");
             try {
