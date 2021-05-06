@@ -13,9 +13,10 @@ public class BlockingHashMapTest {
         List<Integer> list = IntStream.rangeClosed(1, 10).boxed().sorted(Comparator.comparingInt(i -> -1 * i)).collect(Collectors.toList());
         Collections.shuffle(list);
         new Thread(() -> list.forEach(l -> {
-            System.out.println(l + " put");
             try {
                 map.put("foo" + l, "bar");
+                System.out.println(l + " put");
+                Thread.sleep((long) (1000 * ThreadLocalRandom.current().nextDouble(0.5, 1.2)));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
