@@ -1,32 +1,44 @@
 package org.bl.map;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class BlockingHashMapTest {
     public static void main(String[] args) {
-        BlockingMap<String, String> map = new BlockingHashMap<>(10);
-        List<Integer> list = IntStream.rangeClosed(1, 10).boxed().sorted(Comparator.comparingInt(i -> -1 * i)).collect(Collectors.toList());
-        // Collections.shuffle(list);
-        new Thread(() -> list.forEach(l -> {
-            try {
-                map.put("foo" + l, "bar");
-                System.out.println(l + " put");
-                Thread.sleep((long) (1000 * ThreadLocalRandom.current().nextDouble(0.5, 1.2)));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        BlockingMap<String, String> map = new BlockingHashMap<>(20);
+
+        ExecutorService producerService = Executors.newFixedThreadPool(20);
+        IntStream.rangeClosed(1, 1000).forEach(l -> {
+            producerService.execute(() -> {
+                try {
+                    Thread.sleep((long) (1000 * ThreadLocalRandom.current().nextDouble(0.1, 3)));
+                    map.put("foo" + l, "bar");
+                    System.out.println(l + " put");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            if (l == 1000) {
+                producerService.shutdown();
             }
-        })).start();
+        });
+
         System.out.println("start");
-        IntStream.rangeClosed(1, 10).forEach(l -> {
-            try {
-                System.out.println(l + " take - " + map.take("foo" + l));
-                Thread.sleep((long) (1000 * ThreadLocalRandom.current().nextDouble(0.5, 1.2)));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+        ExecutorService consumerService = Executors.newFixedThreadPool(10);
+        IntStream.rangeClosed(1, 1000).forEach(l -> {
+            consumerService.execute(() -> {
+                try {
+                    System.out.println(l + " take - " + map.take("foo" + l));
+                    // Thread.sleep((long) (1000 * ThreadLocalRandom.current().nextDouble(0.5, 1.2)));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            if (l == 1000) {
+                consumerService.shutdown();
             }
         });
     }
